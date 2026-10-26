@@ -1,0 +1,15 @@
+# Python >= 3.8
+# Install PyTorch with a CUDA build matching your GPU first (Ampere GPUs such as A40/A100 need CUDA >= 11),
+# see https://pytorch.org/get-started/previous-versions/, then:
+#   pip install -r requirements.txt
+torch>=1.10.0
+torchvision>=0.11.1
+numpy<1.24          # data/augmentations/randaugment.py uses np.int
+scipy
+scikit-learn
+pandas
+tensorboard
+matplotlib
+tqdm
+Pillow
+six
