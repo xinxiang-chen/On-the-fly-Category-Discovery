@@ -21,7 +21,7 @@ from tqdm import tqdm
 from torch.nn import functional as F
 import torch.nn as nn
 
-from project_utils.cluster_and_log_utils import log_accs_from_preds
+from project_utils.cluster_and_log_utils import log_accs_from_preds, log_code_metrics
 from config import exp_root, dino_pretrain_path
 
 
@@ -186,6 +186,9 @@ def train(projection_head, model, train_loader, test_loader, unlabelled_train_lo
             all_acc, old_acc, new_acc = test_on_the_fly(model, projection_head, unlabelled_train_loader,
                                                     epoch=epoch, save_name='Train ACC Unlabelled',
                                                     args=args)
+            all_acc_test, old_acc_test, new_acc_test = test_on_the_fly(model, projection_head, test_loader,
+                                                    epoch=epoch, save_name='Test ACC',
+                                                    args=args)
 
         # ----------------
         # LOG
@@ -272,6 +275,8 @@ def test_on_the_fly(model, projection_head, test_loader,
     all_acc, old_acc, new_acc = log_accs_from_preds(y_true=targets, y_pred=preds, mask=mask,
                                                     T=epoch, eval_funcs=args.eval_funcs, save_name=save_name,
                                                     writer=args.writer)
+    log_code_metrics(codes=(all_feats > 0).astype(np.int8), y_true=targets, mask=mask,
+                     T=epoch, save_name=save_name, writer=args.writer)
 
     return all_acc, old_acc, new_acc
 
@@ -316,11 +321,13 @@ if __name__ == "__main__":
     parser.add_argument('--sup_con_weight', type=float, default=0.5)
     parser.add_argument('--n_views', default=2, type=int)
     parser.add_argument('--contrast_unlabel_only', type=str2bool, default=False)
-    
+    parser.add_argument('--code_dim', default=12, type=int, help='Hash code length')
+    parser.add_argument('--seeds', nargs='+', type=int, default=list(range(10)), help='One run per seed')
+
         # ----------------------
         # Multiple Runs
         # ----------------------
-    for run in range(0, 10):
+    for run in parser.parse_args().seeds:
 
         # ----------------------
         # INIT
@@ -360,7 +367,6 @@ if __name__ == "__main__":
             args.image_size = 224
             args.feat_dim = 768
             args.num_mlp_layers = 3
-            args.code_dim = 12
             args.mlp_out_dim = None
 
 

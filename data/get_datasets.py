@@ -6,6 +6,7 @@ from data.stanford_cars import get_scars_datasets
 from data.imagenet import get_imagenet_100_datasets
 from data.cub import get_cub_datasets
 from data.fgvc_aircraft import get_aircraft_datasets
+from data.pets import get_oxford_pets_datasets
 
 from data.cifar import subsample_classes as subsample_dataset_cifar
 from data.herbarium_19 import subsample_classes as subsample_dataset_herb
@@ -13,6 +14,7 @@ from data.stanford_cars import subsample_classes as subsample_dataset_scars
 from data.imagenet import subsample_classes as subsample_dataset_imagenet
 from data.cub import subsample_classes as subsample_dataset_cub
 from data.fgvc_aircraft import subsample_classes as subsample_dataset_air
+from data.pets import subsample_classes as subsample_dataset_pets
 
 from copy import deepcopy
 import pickle
@@ -27,7 +29,8 @@ sub_sample_class_funcs = {
     'herbarium_19': subsample_dataset_herb,
     'cub': subsample_dataset_cub,
     'aircraft': subsample_dataset_air,
-    'scars': subsample_dataset_scars
+    'scars': subsample_dataset_scars,
+    'pets': subsample_dataset_pets
 }
 
 get_dataset_funcs = {
@@ -37,7 +40,8 @@ get_dataset_funcs = {
     'herbarium_19': get_herbarium_datasets,
     'cub': get_cub_datasets,
     'aircraft': get_aircraft_datasets,
-    'scars': get_scars_datasets
+    'scars': get_scars_datasets,
+    'pets': get_oxford_pets_datasets
 }
 
 
@@ -186,6 +190,12 @@ def get_class_splits(args):
 
             args.train_classes = range(100)
             args.unlabeled_classes = range(100, 200)
+
+    elif args.dataset_name == 'pets':
+
+        args.image_size = 224
+        args.train_classes = range(19)
+        args.unlabeled_classes = range(19, 37)
 
     elif args.dataset_name == 'chinese_traffic_signs':
 
