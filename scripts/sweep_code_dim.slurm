@@ -1,11 +1,11 @@
 #!/bin/bash
-# Hash code length sweep for SMILE on CUB and Pets (CARC Discovery, Slurm job array).
+# Hash code length sweep for SMILE on CUB and Stanford Cars (CARC Discovery, Slurm job array).
 # 8 tasks = 2 datasets x 4 code lengths, one GPU each.
 #
 # Submit from the SMILE repo root:
 #   mkdir -p log/slurm
 #   sbatch --account=<project_id> scripts/sweep_code_dim.slurm
-# Run a subset, e.g. only Pets:
+# Run a subset, e.g. only Stanford Cars:
 #   sbatch --account=<project_id> --array=4-7 scripts/sweep_code_dim.slurm
 #
 #SBATCH --job-name=smile_codedim
@@ -22,7 +22,7 @@
 
 set -euo pipefail
 
-DATASETS=(cub pets)
+DATASETS=(cub scars)
 LENGTHS=(128 256 512 1024)
 SEED=0               # first of SMILE's default runs (seeds 0-9)
 
@@ -30,7 +30,7 @@ idx=${SLURM_ARRAY_TASK_ID}
 data_set=${DATASETS[$(( idx / ${#LENGTHS[@]} ))]}
 L=${LENGTHS[$(( idx % ${#LENGTHS[@]} ))]}
 
-# Directory holding cub/, oxford_pets/ and dino/dino_vitbase16_pretrain.pth (see config.py)
+# Directory holding cub/, stanford_cars/ and dino/dino_vitbase16_pretrain.pth (see config.py)
 export SMILE_DATA_ROOT=${SMILE_DATA_ROOT:-$HOME/Datasets}
 
 module purge

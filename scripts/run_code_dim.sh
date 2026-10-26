@@ -4,9 +4,9 @@
 # Usage (from the SMILE repo root):
 #   bash scripts/run_code_dim.sh [dataset] [code_dim] [gpu] [seed]
 #   bash scripts/run_code_dim.sh cub 256 0          # defaults: cub 256 0 0
-#   nohup bash scripts/run_code_dim.sh pets 1024 1 > /dev/null 2>&1 &
+#   nohup bash scripts/run_code_dim.sh scars 1024 1 > /dev/null 2>&1 &
 #
-# Data root holds cub/, oxford_pets/ and dino/dino_vitbase16_pretrain.pth (see config.py):
+# Data root holds cub/, stanford_cars/ and dino/dino_vitbase16_pretrain.pth (see config.py):
 #   export SMILE_DATA_ROOT=/path/to/Datasets
 
 set -euo pipefail

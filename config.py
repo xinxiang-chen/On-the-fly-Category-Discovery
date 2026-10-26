@@ -9,6 +9,7 @@ data_root = os.environ.get('SMILE_DATA_ROOT', '/data')
 cifar_10_root = os.path.join(data_root, 'cifar10')
 cifar_100_root = os.path.join(data_root, 'cifar100')
 cub_root = os.path.join(data_root, 'cub')
+car_root = os.path.join(data_root, 'stanford_cars')       # contains cars_train/, cars_test/, devkit/
 aircraft_root = os.path.join(data_root, 'aircraft')
 herbarium_dataroot = os.path.join(data_root, 'herb')
 imagenet_root = os.path.join(data_root, 'ImageNet')

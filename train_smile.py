@@ -267,7 +267,9 @@ def test_on_the_fly(model, projection_head, test_loader,
             hash_dict.append(feat)
         preds.append(hash_dict.index(feat))
     preds = np.array(preds)
-    print(len(list(set(preds))), len(preds))
+    est_cls = len(set(preds.tolist()))
+    print(f'Epoch {epoch}, {save_name}_estcls: {est_cls} / {len(preds)}')
+    args.writer.add_scalar(f'{save_name}_estcls', est_cls, epoch)
 
     # -----------------------
     # EVALUATE
